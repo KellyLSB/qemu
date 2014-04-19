@@ -16,6 +16,8 @@ endif
 # Packaging version
 DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
 
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
 # Compiler flags
 CFLAGS = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
@@ -45,6 +47,7 @@ common_configure_opts = \
 	--with-system-pixman \
 	--interp-prefix=/etc/qemu-binfmt/%M \
 	--localstatedir=/var \
+	--libdir=\$${prefix}/lib/${DEB_HOST_MULTIARCH} \
 
 ifeq (${enable_system},enable)
 
@@ -252,6 +255,8 @@ ifeq ($(enable_linux_user),enable)
 
 endif	# enable_linux_user
 
+	rm -f debian/tmp/usr/lib/*/libcacard.la
+
 # install whole thing so --list-missing works right
 	dh_install --list-missing
 # install the rest for arch/indep as needed
@@ -278,6 +283,7 @@ endif
 	dh_compress ${ai}
 	dh_fixperms ${ai}
 	dh_installdeb ${ai}
+	dh_makeshlibs ${ai}
 	dh_shlibdeps ${ai}
 	dh_gencontrol ${ai}
 	dh_md5sums ${ai}

@@ -1,3 +1,15 @@
+qemu (2.0.0+dfsg-4) UNRELEASED; urgency=medium
+
+  * added libcacard0, libcacard-dev and libcacard-tools packages:
+    - enable multiarch --libdir
+    - build-depend on libtool and libnss-dev
+    - --enable-smartcard-nss
+    - run dh_makeshlibs
+    - rm libcacard.la
+    - added libcacard*.install and libcacard0.symbols
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 21 Apr 2014 12:38:03 +0400
+
 qemu (2.0.0+dfsg-3) unstable; urgency=low
 
   * 2.0.0 closed #744213 (CVE-2013-4544) and #745157 (CVE-2014-2894)

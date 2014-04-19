@@ -7,6 +7,7 @@ qemu (2.0.0+dfsg-4) UNRELEASED; urgency=medium
     - run dh_makeshlibs
     - rm libcacard.la
     - added libcacard*.install and libcacard0.symbols
+  * make-link-qemu-with-shared-libcacard.diff -- patch to link libcacard
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 21 Apr 2014 12:38:03 +0400
 

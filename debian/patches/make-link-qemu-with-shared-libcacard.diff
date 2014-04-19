@@ -1,0 +1,26 @@
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: make: link qemu with shared libcacard
+Date: Sat, 19 Apr 2014 14:08:12 +0400
+
+This patch links qemu with libcacard.so, not with individual
+objects from this library, to make shared code shared.
+
+This is a band-aid, because it only works on *nix with libtool.
+More complete fix needed for upstream.
+
+diff --git a/Makefile.objs b/Makefile.objs
+index a6e0e2a..204dafc 100644
+--- a/Makefile.objs
++++ b/Makefile.objs
+@@ -75,7 +75,10 @@ common-obj-y += backends/
+ 
+ common-obj-$(CONFIG_SECCOMP) += qemu-seccomp.o
+ 
+-common-obj-$(CONFIG_SMARTCARD_NSS) += $(libcacard-y)
++#libcacard-m = $(libcacard-y)
++libcacard-m = .libs/libcacard.so
++.libs/libcacard.so: libcacard.la
++common-obj-$(CONFIG_SMARTCARD_NSS) += $(libcacard-m)
+ 
+ ######################################################################
+ # qapi
